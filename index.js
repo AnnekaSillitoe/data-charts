@@ -735,49 +735,69 @@ var dataset = {
  }
 };
 
-var data = dataset.result.C1.values;
+var n = 25, // number of samples
+    m = 12; // number of series
 
-var w = 500;
-var h = 500;
-var barPadding = 1;
+// var data = d3.range(m).map(function() { return d3.range(n).map(Math.random); });
 
-var svg = d3.select("body")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h);
+var data = [];
 
-svg.selectAll("rect")
-   .data(data)
-   .enter()
-   .append("rect")
-   .attr("x", function(d, i) {
-    return i * (w / data.length);
-})
-   .attr("y", function(d){
-     return h - (d);
-   })
-   .attr("width", w / data.length - barPadding)
-   .attr("height", function(d) {
-    return d;  // <-- Times four!
-})
-.attr("fill", function(d) {
-    return "rgb(0, 0, " + (d * 10) + ")";
-})
+for (var result in dataset.result) {
+  data.push(dataset.result[result].values);
+}
 
-svg.selectAll("text")
-   .data(data)
-   .enter()
-   .append("text")
-   .text(function(d) {
-        return d;
-   })
-   .attr("x", function(d, i) {
-        return i * (w / data.length) + (w / data.length - barPadding) / 2;
-    })
-    .attr("y", function(d) {
-         return h - (d) + 14;  //15 is now 14
-     })
-   .attr("font-family", "sans-serif")
-   .attr("font-size", "11px")
-   .attr("fill", "white")
-   .attr("text-anchor", "middle")
+console.log(data);
+
+var margin = {top: 20, right: 30, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var y = d3.scale.linear()
+    .domain([0, 500])
+    .range([height, 0]);
+
+var x0 = d3.scale.ordinal()
+    .domain(d3.range(n))
+    .rangeBands([0, width], .2);
+
+var x1 = d3.scale.ordinal()
+    .domain(d3.range(m))
+    .rangeBands([0, x0.rangeBand()]);
+
+var z = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+    .scale(x0)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("svg:g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+svg.append("g").selectAll("g")
+    .data(data)
+  .enter().append("g")
+    .style("fill", function(d, i) { return z(i); })
+    .attr("transform", function(d, i) { return "translate(" + x1(i) + ",0)"; })
+  .selectAll("rect")
+    .data(function(d) { return d; })
+  .enter().append("rect")
+    .attr("width", x1.rangeBand())
+    .attr("height", function(d){ return height - y(d) })
+    .attr("x", function(d, i) { return x0(i); })
+    .attr("y", function(d) { return y(d); });
