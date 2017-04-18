@@ -5,3 +5,13 @@ svg.bar {
     background-color: teal;
     margin-right: 2px;
 }
+
+.axis path {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: Lato;
+    font-size: 13px;
+}

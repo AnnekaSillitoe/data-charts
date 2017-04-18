@@ -738,15 +738,11 @@ var dataset = {
 var n = 25, // number of samples
     m = 12; // number of series
 
-// var data = d3.range(m).map(function() { return d3.range(n).map(Math.random); });
-
 var data = [];
 
 for (var result in dataset.result) {
   data.push(dataset.result[result].values);
 }
-
-console.log(data);
 
 var margin = {top: 20, right: 30, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
