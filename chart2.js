@@ -5597,6 +5597,7 @@ var yAxis = d3.svg.axis()
     .orient("left");
 
 var svg2 = d3.select("body").append("svg")
+    .attr("class", "chart-2 hidden")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("svg:g")

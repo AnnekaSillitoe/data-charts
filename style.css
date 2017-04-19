@@ -15,3 +15,17 @@ svg.bar {
     font-family: Lato;
     font-size: 13px;
 }
+
+.hidden {
+  display: none;
+}
+
+.buttons {
+  float: right;
+  padding: 3em;
+  margin-right: 3em;
+}
+
+button {
+  padding: 1em;
+}

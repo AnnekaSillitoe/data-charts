@@ -744,7 +744,7 @@ for (var result in dataset.result) {
   data.push(dataset.result[result].values);
 }
 
-var margin = {top: 20, right: 30, bottom: 30, left: 40},
+var margin = {top: 20, right: 30, bottom: 30, left: 60},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -771,9 +771,10 @@ var yAxis = d3.svg.axis()
     .orient("left");
 
 var svg = d3.select("body").append("svg")
+    .attr("class", "chart-1")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("svg:g")
+    .append("svg:g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 svg.append("g")
@@ -787,12 +788,12 @@ svg.append("g")
 
 svg.append("g").selectAll("g")
     .data(data)
-  .enter().append("g")
+    .enter().append("g")
     .style("fill", function(d, i) { return z(i); })
     .attr("transform", function(d, i) { return "translate(" + x1(i) + ",0)"; })
-  .selectAll("rect")
+    .selectAll("rect")
     .data(function(d) { return d; })
-  .enter().append("rect")
+    .enter().append("rect")
     .attr("width", x1.rangeBand())
     .attr("height", function(d){ return height - y(d) })
     .attr("x", function(d, i) { return x0(i); })
